@@ -1,23 +1,26 @@
 package com.employee.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.employee.model.Employee;
 
-
-
 public interface EmployeeService {
 
-public Employee create(Employee employee);
+	Employee createEmployee(Employee employee);
+
+	Employee updateEmployee(Employee employee,int id);
+
+	void deleteEmployee(int id);
+
+	Optional<Employee> findEmployeeById(int id);
+
 	
-	public Employee update(Employee employee, int id);
-	
-	public void delete(int id);
-	
-	public Employee getById(int id);
-	
-	public List<Employee> getAll(String sortBy,String sortDir);
-	public List<Employee> getAll();
-	
-	public List<Employee> getByFirstname(String firstname);
+
+	List<Employee> findByFirstname(String firstname);
+
+	List<Employee> findAllEmployees(String sortBy, String sortDir);
+
+	List<Employee> findAllEmployees();
+
 }

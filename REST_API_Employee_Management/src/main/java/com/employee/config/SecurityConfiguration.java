@@ -2,15 +2,15 @@ package com.employee.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -41,13 +41,19 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	public void configure(AuthenticationManagerBuilder mgr) {
 		mgr.authenticationProvider(getDaoAuthenticationProvider());
 	}
-
 	@Override
 	public void configure(HttpSecurity http) {
 		try {
 
-			http.httpBasic().and().authorizeRequests().antMatchers("/api/employees/create").hasAuthority("ADMIN")
-					.antMatchers("/**").permitAll().anyRequest().authenticated().and().headers().frameOptions()
+			http.httpBasic()
+			    .and()
+			    .authorizeRequests()
+			    .antMatchers("/create").hasAuthority("ADMIN")
+				.antMatchers("/**")
+				.permitAll()
+				.anyRequest()
+				.authenticated()
+				.and().headers().frameOptions()
 					.disable().and().cors().and().csrf().disable();
 
 		} catch (Exception e) {
